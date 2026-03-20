@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[provide=*, main=polish]{babel}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage[colorlinks=true, linkcolor=black]{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+
+\title{Systemy Wbudowane 2026 \\ Projekt \\ Sterownik windy}
+\author{Jan Brzoska \\ Michał Loński}
+\date{}
+
+\begin{document}
+\maketitle
+\renewcommand{\contentsname}{Spis treści}
+\tableofcontents
+\pagebreak
+\renewcommand{\arraystretch}{1.5}
+\section{Opis systemu}
+
+\subsection{Wprowadzenie}
+Sterownik windy jest systemem odpowiedzialnym za zarządzanie ruchem kabiny windy w budynku wielopiętrowym.
+\subsection{Funkcjonalności}
+Główną funkcjonalnością systemu jest transport pasażerów pomiędzy piętrami budynku.\\
+Do funkcjonalności podstawowych należą:
+\begin{itemize}
+    \item obsługa zgłoszeń (wezwanie windy)
+    \item obsługa wyboru pięter w windzie
+    \item sterowanie ruchem windy (ruch w górę, dół oraz zatrzymanie się)
+    \item otwieranie i zamykanie drzwi windy
+\end{itemize}
+Do funkcjonalności wtórnych należą:
+\begin{itemize}
+    \item optymalizacja kolejności przystanków
+    \item obsługa wielu wind
+    \item wzywanie serwisu/pomocy
+    \item wykrywanie przeciążenia
+    \item tryby specjalne (awaryjny, serwisowy)
+    \item monitorowanie stanu systemu
+\end{itemize}
+\subsection{Sposób działania}
+System przetwarza sygnały wejściowe i wysyła odpowiednie sygnały wyjściowe.
+\bigskip
+\\
+\textbf{Wejścia do systemu:}
+\begin{itemize}
+    \item przyciski na piętrach (góra/dół)
+    \item przyciski w kabinie windy (wybór piętra, wezwanie pomocy)
+    \item czujniki położenia kabiny
+    \item czujniki drzwi
+    \item czujniki obciążenia
+\end{itemize}
+\bigskip
+\textbf{Wyjścia systemu:}
+\begin{itemize}
+    \item sterowanie silnikiem (kierunek i prędkość)
+    \item sterowanie drzwiami
+    \item sygnalizacja (wyświetlacze, dźwięki)
+\end{itemize}
+\bigskip
+Sterownik analizuje aktualny stan systemu i wyznacza optymalne decyzje o kierunku ruchu oraz kolejności obsługi zgłoszeń.
+Optymalność polega na minimalizacji liczby zatrzymań windy oraz minimalizacja czasu oczekiwania pasażerów na windę.
+\subsection{Środowisko pracy}
+System działa w budynkach wielopiętrowych, takich jak:
+\begin{itemize}
+    \item budynki mieszkalne
+    \item biurowce
+    \item centra handlowe
+    \item szpitale
+\end{itemize}
+Ze względu na swoją rolę, system posiada następujące wymagania:
+\begin{itemize}
+    \item wysoki poziom bezpieczeństwa
+    \item niezawodność, odporność na awarie
+    \item zgodność z normami technicznymi
+\end{itemize}
+\subsection{Użytkownicy systemu}
+System jest używany przez różne grupy użytkowników:
+\begin{itemize}
+    \item pasażerowie - korzystający z windy do przemieszczania się lub do transportu towarów
+    \item serwis techniczny - odpowiedzialny za konserwację i diagnostykę
+    \item służby ratunkowe - korzystające z trybów specjalnych (np. pożarowych)
+\end{itemize}
+\end{document}
