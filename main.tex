@@ -1,0 +1,66 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{enumitem}
+
+\geometry{margin=2.5cm}
+
+\begin{document}
+
+\title{Dokumentacja Systemu Wbudowanego: Zespół Wind}
+\author{Lista nr 1 Systemy Wbudowane }
+\date{21 marca 2026}
+\maketitle
+
+\section{Wybór systemu }
+Wybrano system sterowania grupą wind osobowych w budynku biurowym. System ten charakteryzuje się złożoną logiką sterowania - algorytmy optymalizacji ruchu, przy jednoczesnej prostocie interfejsu dla użytkownika końcowego. 
+
+\section{Funkcjonalności systemu}
+Wyodrębniono następujące funkcjonalności:
+
+\subsection{Funkcjonalności podstawowe}
+\begin{itemize}[noitemsep]
+    \item Przyjmowanie i kolejkowanie wezwań z paneli zewnętrznych.
+    \item Realizacja przejazdów międzykondygnacyjnych zgodnie z zadanym celem.
+    \item Sterowanie ryglowaniem i domykaniem drzwi kabinowych oraz przystankowych.
+    \item Precyzyjne pozycjonowanie kabiny względem progu przystanku.
+\end{itemize}
+
+\subsection{Funkcjonalności wtórne}
+\begin{itemize}[noitemsep]
+    \item \textbf{Optymalizacja grupowa:} Algorytm przydzielający wezwanie do kabiny o najkrótszym prognozowanym czasie dojazdu.
+    \item \textbf{Tryb parkingowy:} Pozycjonowanie nieużywanych kabin na strategicznych piętrach np. loobby w celu redukcji czasu oczekiwania.
+    \item \textbf{System wagowy:} Blokada startu przy przekroczeniu udźwigu nominalnego i ignorowanie wezwań zewnętrznych przy pełnym obciążeniu kabiny.
+    \item \textbf{Komunikacja:} Wyświetlanie informacji kierunkowych, numeru piętra oraz emitowanie komunikatów głosowych.
+\end{itemize}
+
+\section{Wymagania systemowe}
+Zgodnie z wytycznymi, system opisano w czterech płaszczyznach:
+
+\subsection{CO - Cele systemu}
+Głównym zadaniem jest bezpieczny i efektywny transport pionowy pasażerów. System musi zarządzać ruchem czterech jednostek w sposób ciągły, minimalizując zużycie energii i czas oczekiwania na kabinę.
+
+\subsection{JAK - Realizacja techniczna}
+\begin{itemize}
+    \item \textbf{Wejścia:} Przyciski dotykowe (matryca), czujniki magnetyczne położenia, enkodery silników, fotokomórki (kurtyny świetlne), czujnik przeciążenia kabiny i sygnały alarmowe.
+    \item \textbf{Wyjścia:} Sterowniki falowników (napęd), przekaźniki rygli, oświetlenie LED, system audio, panele LCD.
+    \item \textbf{Zależności:} Ruch kabiny jest uzależniony od domknięcia obwodu bezpieczeństwa (drzwi, stop awaryjny). Prędkość przejazdu jest regulowana krzywą  w celu zapewnienia komfortu.
+\end{itemize}
+
+\subsection{GDZIE -- Środowisko pracy}
+System pracuje w szybie windy oraz maszynowni budynku.
+\begin{itemize}[noitemsep]
+    \item \textbf{Ograniczenia:} Wąskie zakresy tolerancji temperaturowej dla elektroniki sterującej, silne zakłócenia elektromagnetyczne od napędów dużej mocy.
+    \item \textbf{Zagrożenia:} Ryzyko pożaru - wymagana integracja z systemem oddymiania, oraz konieczność pracy w trybie awaryjnym przy zaniku zasilania głównego.
+\end{itemize}
+
+\subsection{Z KIM -- Interakcje}
+\begin{itemize}
+    \item \textbf{Pasażer:} Użytkownik standardowy; interakcja ograniczona do wyboru kierunku i piętra docelowego.
+    \item \textbf{Strażak:} Użytkownik uprzywilejowany; za pomocą klucza systemowego wprowadza windę w tryb pracy pożarowej - niezależność od wezwań zewnętrznych.
+    \item \textbf{Serwisant/Technik:} Dostęp do trybu inspekcyjnego ,sterowanie z dachu kabiny przy niskiej prędkości i logów błędów.
+\end{itemize}
+
+\end{document}
