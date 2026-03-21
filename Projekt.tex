@@ -27,24 +27,26 @@
 \section{Opis systemu}
 
 \subsection{Wprowadzenie}
-Sterownik windy jest systemem odpowiedzialnym za zarządzanie ruchem kabiny windy w budynku wielopiętrowym.
+Sterownik windy jest systemem odpowiedzialnym za zarządzanie pionowym ruchem kabiny windy w budynku wielopiętrowym.
 \subsection{Funkcjonalności}
-Główną funkcjonalnością systemu jest transport pasażerów pomiędzy piętrami budynku.\\
-Do funkcjonalności podstawowych należą:
+Główną funkcjonalnością systemu jest transport pasażerów pomiędzy piętrami budynku.
+\subsubsection{Funkcjonalności podstawowe}
 \begin{itemize}
-    \item obsługa zgłoszeń (wezwanie windy)
+    \item przyjmowanie i kolejkowanie zgłoszeń (wezwanie windy)
     \item obsługa wyboru pięter w windzie
     \item sterowanie ruchem windy (ruch w górę, dół oraz zatrzymanie się)
     \item otwieranie i zamykanie drzwi windy
 \end{itemize}
-Do funkcjonalności wtórnych należą:
+\subsubsection{Funkcjonalności wtórne}
 \begin{itemize}
     \item optymalizacja kolejności przystanków
     \item obsługa wielu wind
     \item wzywanie serwisu/pomocy
-    \item wykrywanie przeciążenia
+    \item wykrywanie przeciążenia i reagowanie na nie
     \item tryby specjalne (awaryjny, serwisowy)
+    \item ograniczony dostęp do poszczególnych pięter, wymagający uprawnień (np. karty pracownika)
     \item monitorowanie stanu systemu
+    \item wyświetlanie informacji o piętrze, emitowanie komunikatów głosowych
 \end{itemize}
 \subsection{Sposób działania}
 System przetwarza sygnały wejściowe i wysyła odpowiednie sygnały wyjściowe.
@@ -53,10 +55,11 @@ System przetwarza sygnały wejściowe i wysyła odpowiednie sygnały wyjściowe.
 \textbf{Wejścia do systemu:}
 \begin{itemize}
     \item przyciski na piętrach (góra/dół)
-    \item przyciski w kabinie windy (wybór piętra, wezwanie pomocy)
+    \item przyciski w kabinie windy (wybór piętra, otwarcie/zamknięcie drzwi, wezwanie pomocy)
     \item czujniki położenia kabiny
     \item czujniki drzwi
     \item czujniki obciążenia
+    \item czytnik kart lub innej formy weryfikacji uprawnień
 \end{itemize}
 \bigskip
 \textbf{Wyjścia systemu:}
@@ -64,9 +67,11 @@ System przetwarza sygnały wejściowe i wysyła odpowiednie sygnały wyjściowe.
     \item sterowanie silnikiem (kierunek i prędkość)
     \item sterowanie drzwiami
     \item sygnalizacja (wyświetlacze, dźwięki)
+    \item oświetlenie windy
 \end{itemize}
 \bigskip
 Sterownik analizuje aktualny stan systemu i wyznacza optymalne decyzje o kierunku ruchu oraz kolejności obsługi zgłoszeń.
+Ruch windy zależny jest od trybu pracy windy oraz domknięcia drzwi.
 Optymalność polega na minimalizacji liczby zatrzymań windy oraz minimalizacja czasu oczekiwania pasażerów na windę.
 \subsection{Środowisko pracy}
 System działa w budynkach wielopiętrowych, takich jak:
@@ -78,7 +83,9 @@ System działa w budynkach wielopiętrowych, takich jak:
 \end{itemize}
 Ze względu na swoją rolę, system posiada następujące wymagania:
 \begin{itemize}
-    \item wysoki poziom bezpieczeństwa
+    \item przystosowanie do pracy w szybie windy (wąskie zakresy tolerancji temperatur, zakłócenia elektromagnetyczne)
+    \item wysoki poziom bezpieczeństwa (zatrzymanie awaryjne, połączenie z systemem oddymiania)
+    \item możliwość pracy w trybie awaryjnym przy zaniku zasilania głównego
     \item niezawodność, odporność na awarie
     \item zgodność z normami technicznymi
 \end{itemize}
