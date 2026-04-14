@@ -3,7 +3,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
 \usepackage{array}
-
 \geometry{margin=2cm}
 
 \begin{document}
@@ -20,8 +19,7 @@
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Proces zgłoszenia wezwania windy z poziomu piętra za pomocą przycisku kierunkowego.} \\ \hline
 \textbf{Trigger:} Naciśnięcie przycisku (góra/dół) & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
-\textbf{Include:} Zarządzanie kolejką zgłoszeń \newline
-\textbf{Extend:} Tryb awaryjny} \\ \hline
+\textbf{Include:} Zarządzanie kolejką zgłoszeń } \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
 1. Pasażer naciska przycisk kierunku jazdy (góra/dół). \newline
 2. System rejestruje zgłoszenie wraz z kierunkiem. \newline
@@ -91,8 +89,7 @@
 \textbf{Trigger:} Zmiana stanu kolejki żądań & \multicolumn{2}{l|}{\textbf{Type:} Internal} \\ \hline
 
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
-\textbf{Include:} sterowanie ruchem, obsługa drzwi \newline
-\textbf{Extend:} tryb awaryjny} \\ \hline
+\textbf{Include:} sterowanie ruchem, obsługa drzwi} \\ \hline
 
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
 1. System odczytuje stan kolejki żądań. \newline
@@ -128,9 +125,7 @@
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Ten UC opisuje proces wprowadzania nastaw serwisowych przez technika, takich jak czas podtrzymania otwartych drzwi, prędkość nominalna oraz piętro bazowe.} \\ \hline
 \textbf{Trigger:} Serwisant (aktywacja przełącznika trybu) & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
-\textbf{Association:} Baza danych (Pamięć konfiguracji) \newline
-\textbf{Include:} - \newline
-\textbf{Extend:} -} \\ \hline
+\textbf{Association:} Baza danych (Pamięć konfiguracji) } \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
 1. Serwisant naciska jeden z przycisków „SET” na panelu sterowniczym (np. SET\_TIME, SET\_SPEED).  \newline
 2. System wyświetla aktualną wartość na wyświetlaczu i umożliwia wprowadzenie nowej za pomocą klawiatury numerycznej. \newline
