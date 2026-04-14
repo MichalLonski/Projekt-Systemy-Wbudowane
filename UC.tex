@@ -1,0 +1,182 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{array}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{Use Case Name:} Wezwanie windy & \textbf{Use Case Number:} 1 & \textbf{Priority:} Medium \\ \hline
+\textbf{Primary Actor:} Pasażer & \multicolumn{2}{l|}{\textbf{Use Case Type:} Essential} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
+\textbf{Pasażer:} wzywa windę na swoje piętro. \newline
+\textbf{System:} rejestruje zgłoszenie i uwzględnia je w planowaniu.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Proces zgłoszenia wezwania windy z poziomu piętra za pomocą przycisku kierunkowego.} \\ \hline
+\textbf{Trigger:} Naciśnięcie przycisku (góra/dół) & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
+\textbf{Include:} Zarządzanie kolejką zgłoszeń \newline
+\textbf{Extend:} Tryb awaryjny} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
+1. Pasażer naciska przycisk kierunku jazdy (góra/dół). \newline
+2. System rejestruje zgłoszenie wraz z kierunkiem. \newline
+3. System analizuje pozycję wszystkich kabin i przydziela tę, która dotrze najszybciej. \newline
+4. Zgłoszenie zostaje dodane do kolejki obsługi.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:}} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Alternate/Exception Flows:} \newline
+\textbf{Ex. 1:} System w trybie awaryjnym - zgłoszenie ignorowane. \newline
+\textbf{Ex. 2:} Naciśnięcie obu przycisków kierunku - zgłoszenie ignorowane.} \\ \hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{Use Case Name:} Wybór piętra w kabinie & \textbf{Use Case Number:} 2 & \textbf{Priority:} Medium \\ \hline
+\textbf{Primary Actor:} Pasażer & \multicolumn{2}{l|}{\textbf{Use Case Type:} Detail, essential} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
+\textbf{Pasażer:} wybiera docelowe piętro. \newline
+\textbf{System:} uwzględnia wybór w planie jazdy.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Wybór piętra docelowego wewnątrz kabiny windy.} \\ \hline
+\textbf{Trigger:} Naciśnięcie przycisku w windzie & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
+\textbf{Include:} Zarządzanie kolejką zgłoszeń} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
+1. Pasażer naciska przycisk w kabinie: \newline
+\hspace*{10pt} $\bullet$ jeśli naciśnięto przycisk otwarcia drzwi: przejdź do podprzepływu S1. \newline
+\hspace*{10pt} $\bullet$ jeśli naciśnięto przycisk zamknięcia drzwi: przejdź do podprzepływu S2. \newline
+\hspace*{10pt} $\bullet$ jeśli naciśnięto przycisk alarmowy i przytrzymano: przejdź do podprzepływu S3. \newline
+\hspace*{10pt} $\bullet$ jeśli wybrano piętro: przejdź do podprzepływu S4. \newline
+2. System rejestruje wybór i podświetla przycisk. \newline
+3. System dodaje piętro do listy przystanków i aktualizuje plan jazdy windy. \newline
+} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:} \newline
+\textbf{S1:} System zamyka drzwi kabiny. \newline
+\textbf{S2:} System otwiera drzwi kabiny. \newline
+\textbf{S3:} System nawiązuje połączenie między pasażerem a ochroną. \newline
+\textbf{S4:} 1. Jeśli wybrane piętro nie wymaga specjalnych uprawnień kontynuuj przepływ główny. \newline
+             \hspace*{20pt} 2. Oczekuj na przyłożenie karty dostępu do czytnika. \newline
+             \hspace*{20pt} 3. Powrót do przepływu głównego. \newline
+} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Alternate/Exception Flows:} \newline
+\textbf{Ex. 1:} Brak wymaganych uprawnień - sygnał dźwiękowy i zignorowanie wyboru.} \\ \hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{Use Case Name:} Realizacja przejazdu & \textbf{Use Case Number:} 3 & \textbf{Priority:} High \\ \hline
+\textbf{Primary Actor:} System & \multicolumn{2}{l|}{\textbf{Use Case Type:} Detail, essential} \\ \hline
+
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
+\textbf{Pasażer:} korzysta z kabiny windy. \newline
+\textbf{System sterowania:} realizuje żądania z kolejki. \newline
+\textbf{Sterownik napędu:} wykonuje ruch kabiny. \newline
+\textbf{Czujniki:} dostarczają dane o pozycji kabiny i stanie drzwi.} \\ \hline
+
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} System realizuje przejazd kabiny windy do kolejnych celów znajdujących się w kolejce żądań.} \\ \hline
+
+\textbf{Trigger:} Zmiana stanu kolejki żądań & \multicolumn{2}{l|}{\textbf{Type:} Internal} \\ \hline
+
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
+\textbf{Include:} sterowanie ruchem, obsługa drzwi \newline
+\textbf{Extend:} tryb awaryjny} \\ \hline
+
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
+1. System odczytuje stan kolejki żądań. \newline
+\hspace*{10pt} $\bullet$ jeśli kolejka pusta: zakończ przepływ. \newline
+\hspace*{10pt} $\bullet$ jeśli kolejka niepusta: kontynuuj główny przepływ. \newline
+2. System wybiera pierwsze żądanie z kolejki według priorytetu i wyznacza docelowe piętro. \newline
+3. System zamyka drzwi i rygluje je. \newline
+4. System generuje polecenie ruchu kabiny do sterownika napędu. \newline
+5. System realizuje ruch kabiny do wyznaczonego piętra monitorując czujniki pozycji. \newline
+6. Po osiągnięciu piętra celowego system zatrzymuje kabinę, wyrównuje poziom do progu. \newline
+7. System otwiera drzwi. \newline
+8. System usuwa zrealizowane żądanie z kolejki. \newline
+9. System powraca do kroku 1.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:} } \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Alternate/Exception Flows:} \newline
+\textbf{Ex. 1:} Wykrycie przeszkody w drzwiach - wstrzymanie zamykania drzwi z próbą powtórzenia po interwale czasowym. \newline
+\textbf{Ex. 2:} Tryb awaryjny - zignorowanie kolejki żądań, kierowanie się na wyznaczone odgórnie piętro. \newline
+\textbf{Ex. 3:} Wezwanie serisowe - zignorowanie priorytetów.} \\ \hline
+
+\end{tabular}
+\end{table}
+\newpage
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{Use Case Name:} Konfiguracja parametrów & \textbf{Use Case Number:} 1 & \textbf{Priority:} High \\ \hline
+\textbf{Primary Actor:} Serwisant, System & \multicolumn{2}{l|}{\textbf{Use Case Type:} Detail, essential} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
+\textbf{Serwisant:} dostosowuje pracę windy do specyfiki budynku (czas otwarcia drzwi, prędkość). \newline
+\textbf{System:} odbiera parametry niezbędne do poprawnego wyliczania krzywej hamowania i logiki drzwi. \newline
+\textbf{Baza danych:} przechowuje nastawy w pamięci nieulotnej.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Ten UC opisuje proces wprowadzania nastaw serwisowych przez technika, takich jak czas podtrzymania otwartych drzwi, prędkość nominalna oraz piętro bazowe.} \\ \hline
+\textbf{Trigger:} Serwisant (aktywacja przełącznika trybu) & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
+\textbf{Association:} Baza danych (Pamięć konfiguracji) \newline
+\textbf{Include:} - \newline
+\textbf{Extend:} -} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
+1. Serwisant naciska jeden z przycisków „SET” na panelu sterowniczym (np. SET\_TIME, SET\_SPEED).  \newline
+2. System wyświetla aktualną wartość na wyświetlaczu i umożliwia wprowadzenie nowej za pomocą klawiatury numerycznej. \newline
+3. Po wprowadzeniu wartości, Serwisant naciska przycisk APPLY, aby zatwierdzić zmianę, lub RESET, aby porzucić edycję. \newline
+\hspace*{10pt} $\bullet$ jeśli APPLY: przejdź do podprzepływu S1. \newline
+\hspace*{10pt} $\bullet$ jeśli RESET: przejdź do podprzepływu S2. \newline
+4. Serwisant wybiera kolejny parametr do ustawienia (SET), kończy pracę (DONE) lub resetuje sterownik. \newline
+\hspace*{10pt} $\bullet$ jeśli SET – powrót do kroku. \newline
+\hspace*{10pt} $\bullet$ jeśli DONE – przejdź do kroku. \newline
+5. Nowe dane są przesyłane do pamięci nieulotnej sterownika. \newline
+6. System wyświetla komunikat o poprawnym zapisaniu konfiguracji.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:} \newline
+\textbf{S1:} \newline
+\hspace*{10pt} $\bullet$ Nowe dane są sprawdzane pod kątem dopuszczalnych zakresów (walidacja). \newline
+\hspace*{10pt} $\bullet$ Jeśli poprawne, zostają tymczasowo zapisane w pamięci RAM; jeśli błędne, wyświetlany jest błąd zakresu. \newline
+\textbf{S2:} \newline
+\hspace*{10pt} $\bullet$ Nowe dane nie są zapisywane; system przywraca poprzedni stan i przechodzi do kroku 4.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Alternate/Exception Flows:} \newline
+\textbf{Ex. 1:} Jednoczesne naciśnięcie dwóch przycisków – sygnał dźwiękowy (beep) i ignorowanie wejścia. \newline
+\textbf{Ex. 2:} Błąd zapisu do pamięci EEPROM – wyświetlenie ostrzeżenia o awarii modułu pamięci.} \\ \hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
+\hline
+\textbf{Use Case Name:} Tryb awaryjny & \textbf{Use Case Number:} 5 & \textbf{Priority:} Critical \\ \hline
+\textbf{Primary Actor:} System PPOŻ & \multicolumn{2}{l|}{\textbf{Use Case Type:} Essential} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
+\textbf{System PPOŻ:} przekazuje sygnał zagrożenia. \newline
+\textbf{System windy:} zapewnia bezpieczeństwo pasażerów. \newline
+\textbf{Pasażer:} powinien zostać ewakuowany.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Reakcja windy na sygnał alarmowy.} \\ \hline
+\textbf{Trigger:} Sygnał alarmowy z systemu PPOŻ lub innego systemu bezpieczeństwa & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
+\textbf{Extend:} Wszystkie podstawowe use case’y} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
+1. System odbiera sygnał alarmowy. \newline
+2. Natychmiast anuluje wszystkie zgłoszenia. \newline
+3. Kieruje windę na bezpieczne piętro . \newline
+4. Otwiera drzwi i blokuje dalsze użycie. \newline
+5. System pozostaje w stanie awaryjnym do odwołania alarmu.} \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}
