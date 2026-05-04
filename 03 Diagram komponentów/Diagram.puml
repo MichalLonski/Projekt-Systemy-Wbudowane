@@ -1,6 +1,7 @@
 
 @startuml
 skinparam componentStyle rectangle
+left to right direction
 
 package "Jednostka Główna" {
   [Mikrokontroler Master\nkolejka, logika ETA] as CPU
@@ -16,7 +17,7 @@ package "Jednostka Główna" {
 package "Kabina" {
   [Sterownik kabiny\nSlave] as CAB
   [Panel przycisków] as BTN
-  [Wyświetlacz kabiny] as DSP
+  [Wyświetlacz ] as DSP
   [Czujnik wagi] as WGT
   [Czytnik kart dostępu] as CARD
   [Głośnik] as SPK
