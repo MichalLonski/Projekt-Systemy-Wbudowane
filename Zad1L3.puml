@@ -1,0 +1,60 @@
+
+@startuml
+skinparam componentStyle rectangle
+
+package "Jednostka Główna" {
+  [Mikrokontroler Master\nkolejka, logika ETA] as CPU
+  [Pamięć konfiguracji\nEEPROM] as MEM
+  [Zegar RTC] as RTC
+  [Moduł komunikacji\nzewnętrznej] as EXT
+
+  CPU --> MEM : I2C
+  CPU --> RTC : I2C
+  CPU --> EXT : UART
+}
+
+package "Kabina" {
+  [Sterownik kabiny\nSlave] as CAB
+  [Panel przycisków] as BTN
+  [Wyświetlacz kabiny] as DSP
+  [Czujnik wagi] as WGT
+  [Czytnik kart dostępu] as CARD
+  [Głośnik] as SPK
+  [Falownik silnika] as INV
+  [Czujnik pozycji] as ENC
+  [Fotokomórka drzwi] as PHO
+  [Siłownik drzwi] as DOOR
+
+  CAB --> BTN : GPIO
+  CAB --> DSP : SPI
+  CAB --> WGT : ADC
+  CAB --> CARD : SPI
+  CAB --> SPK : I2S
+  CAB --> INV : PWM
+  CAB --> ENC : GPIO
+  CAB --> PHO : GPIO
+  CAB --> DOOR : PWM
+}
+
+package "Węzeł Piętrowy" {
+  [Sterownik piętra] as FLR
+  [Przyciski piętrowe] as FBTN
+  [Wyświetlacz piętrowy] as FDSP
+  [Czujnik zatrzymania] as HALL
+
+  FLR --> FBTN : GPIO
+  FLR --> FDSP : SPI
+  FLR --> HALL : GPIO
+}
+
+package "Systemy Zewnętrzne" {
+  [System PPOŻ] as FIRE
+  [Panel serwisowy] as SRV
+}
+
+CPU -- CAB : CAN
+CPU -- FLR : CAN
+EXT -- FIRE : UART
+EXT -- SRV : UART
+
+@enduml

@@ -1,0 +1,182 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{polski}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{parskip}
+\usepackage{titlesec}
+
+\geometry{margin=2.5cm}
+
+\title{\textbf{Systemy Wbudowane Lista 3}}
+
+\begin{document}
+
+\maketitle
+
+\section{Zadanie 1 -- Diagram komponentów}
+
+\textbf{Jednostka Główna} to węzeł nadrzędny realizujący logikę kolejkowania zadań i wyznaczania trasy kabiny. Pamięć konfiguracyjna i zegar RTC podłączone są przez I2C, moduł komunikacji zewnętrznej przez UART.
+
+\textbf{Kabina} zawiera sterownik Slave obsługujący wszystkie podzespoły. Przyciski i czujniki binarne podłączone są przez GPIO, wyświetlacz i czytnik kart przez SPI, czujnik wagi przez ADC, głośnik przez I2S, falownik silnika i siłownik drzwi przez PWM.
+
+\textbf{Węzeł Piętrowy} obsługuje przyciski i wyświetlacz na każdym piętrze. Komunikuje się z Jednostką Główną przez magistralę CAN, podobnie jak Kabina. CAN został wybrany ze względu na odporność na zakłócenia elektromagnetyczne panujące w szybie windy.
+
+\textbf{Systemy Zewnętrzne} -- PPOŻ i panel serwisowy -- komunikują się przez moduł zewnętrzny oddzielony od magistrali CAN, co zapewnia niezależność systemu bezpieczeństwa.
+
+\section{Zadanie 2 -- Dane w systemie}
+
+\subsection{Pozycja kabiny}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Położenie liniowe \\
+Jednostka & Milimetry [mm] \\
+Zakres & 0 -- maksymalna wysokość szybu \\
+Rozdzielczość przechowywana & 1 mm \\
+Rozdzielczość wyświetlana & Numer piętra (liczba całkowita) \\
+Format wymiany & \texttt{uint32} -- surowa wartość z enkodera \\
+Źródło & Czujnik pozycji \\
+Odbiorcy & Master, wyświetlacz kabiny, wyświetlacz piętrowy \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Waga kabiny}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Masa \\
+Jednostka & Kilogramy [kg] \\
+Zakres & 0 -- 150\% udźwigu nominalnego \\
+Rozdzielczość przechowywana & 0,1 kg \\
+Rozdzielczość wyświetlana & Niewyświetlana użytkownikowi \\
+Format wymiany & \texttt{float32} -- odczyt ADC przeliczony na kg \\
+Źródło & Czujnik wagi \\
+Odbiorcy & Sterownik kabiny, Master \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Żądania jazdy}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Brak -- dane logiczne \\
+Jednostka & Brak \\
+Zakres & Piętro: 0 -- N, kierunek: \{góra, dół\} \\
+Rozdzielczość przechowywana & 1 piętro \\
+Rozdzielczość wyświetlana & Podświetlenie przycisku wybranego piętra \\
+Format wymiany & \texttt{\{floor: uint8, direction: enum, source: enum\}} \\
+Źródło & Panel przycisków kabiny, przyciski piętrowe \\
+Odbiorcy & Master -- kolejka zadań \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Stan drzwi}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Brak -- dane logiczne \\
+Jednostka & Brak \\
+Zakres & \{otwarte, zamknięte, w ruchu, zablokowane\} \\
+Rozdzielczość przechowywana & Enum 2 bity \\
+Rozdzielczość wyświetlana & Niewyświetlany bezpośrednio \\
+Format wymiany & \texttt{uint8} -- enum stanu \\
+Źródło & Fotokomórka drzwi, siłownik drzwi \\
+Odbiorcy & Sterownik kabiny, Master \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Prędkość kabiny}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Prędkość liniowa \\
+Jednostka & Milimetry na sekundę [mm/s] \\
+Zakres & 0 -- 2500 mm/s \\
+Rozdzielczość przechowywana & 1 mm/s \\
+Rozdzielczość wyświetlana & Niewyświetlana użytkownikowi \\
+Format wymiany & \texttt{uint16} \\
+Źródło & Wyliczana z czujnika pozycji \\
+Odbiorcy & Sterownik kabiny, falownik silnika \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Tryb pracy systemu}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Brak -- dane logiczne \\
+Jednostka & Brak \\
+Zakres & \{normalny, serwisowy, awaryjny PPOŻ, przeciążenie\} \\
+Rozdzielczość przechowywana & Enum 3 bity \\
+Rozdzielczość wyświetlana & Komunikat na wyświetlaczu i głośniku \\
+Format wymiany & \texttt{uint8} -- enum trybu \\
+Źródło & Master, System PPOŻ, Panel serwisowy \\
+Odbiorcy & Wszystkie komponenty systemu \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Parametry konfiguracyjne}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Brak -- nastawy serwisowe \\
+Jednostka & Zależna od parametru \\
+Zakres & Czas otwarcia drzwi: 1--10 s, prędkość nominalna: 100--2500 mm/s, piętro bazowe: 0--N \\
+Rozdzielczość przechowywana & Zależna od parametru \\
+Rozdzielczość wyświetlana & Wartość liczbowa na panelu serwisowym \\
+Format wymiany & \texttt{\{param\_id: uint8, value: uint32\}} \\
+Źródło & Panel serwisowy \\
+Odbiorcy & Pamięć EEPROM, Master \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Uprawnienia dostępu}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Atrybut} & \textbf{Wartość} \\
+\midrule
+Wielkość fizyczna & Brak -- dane logiczne \\
+Jednostka & Brak \\
+Zakres & ID karty: 0 -- $2^{32}$, poziom dostępu: \{pasażer, serwis, służby\} \\
+Rozdzielczość przechowywana & 32-bitowe ID karty \\
+Rozdzielczość wyświetlana & Niewyświetlane \\
+Format wymiany & \texttt{\{card\_id: uint32, access\_level: uint8\}} \\
+Źródło & Czytnik kart dostępu \\
+Odbiorcy & Master, pamięć konfiguracji \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Relacje między danymi}
+
+\textbf{Żądania jazdy} trafiają do Mastera, który porównuje je z \textbf{pozycją kabiny} i generuje polecenia ruchu.
+
+\textbf{Waga kabiny} nadpisuje żądania jazdy -- przekroczenie progu wymusza tryb przeciążenia i blokuje ruch.
+
+\textbf{Stan drzwi} blokuje zmianę \textbf{prędkości kabiny} -- jazda możliwa tylko przy drzwiach zamkniętych i zaryglowanych.
+
+\textbf{Tryb pracy} jest nadrzędny dla całego systemu -- tryb awaryjny PPOŻ anuluje wszystkie żądania i wymusza zjazd na piętro ewakuacyjne.
+
+\textbf{Uprawnienia dostępu} filtrują żądania jazdy na piętra z ograniczonym dostępem.
+
+\textbf{Parametry konfiguracyjne} z EEPROM definiują wartości graniczne dla prędkości, czasu otwarcia drzwi i piętra bazowego.
+
+\end{document}
