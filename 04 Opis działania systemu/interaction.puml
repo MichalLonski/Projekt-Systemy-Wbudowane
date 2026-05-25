@@ -1,0 +1,71 @@
+@startuml
+
+actor "Pasażer" as Pasazer 
+
+participant "Panel piętrowy" as Panel
+participant "Węzeł piętrowy" as Wezel
+participant "Jednostka główna\nmaster" as Master
+participant "Sterownik kabiny" as Kabina
+participant "Sterownik drzwi" as Drzwi
+participant "Falownik silnika" as Silnik
+participant "Czujnik pozycji" as CzPozycji
+participant "Czujnik wagi" as CzWagi
+participant "Wyświetlacz kabiny" as Display
+
+Pasazer -> Panel : Naciśnięcie przycisku\nGóra/Dół
+
+Panel -> Wezel : Sygnał GPIO
+Wezel -> Master : Ramka CAN\n{piętro, kierunek}
+
+Master -> Master : Analiza kolejek\nwybór kabiny\noptymalizacja trasy
+
+Master -> Kabina : Przydział zgłoszenia
+
+Kabina -> CzWagi : Odczyt masy
+
+alt Przeciążenie
+
+    CzWagi --> Kabina : masa > limit
+
+    Kabina -> Display : Komunikat\n o przeciążeniu
+
+    Kabina -> Master : Blokada ruchu
+
+else Masa poprawna
+
+    CzWagi --> Kabina : masa <= limit
+
+    Kabina -> Drzwi : Zamknij drzwi
+
+    loop Dopóki przeszkoda
+        Drzwi --> Kabina : przeszkoda
+        Kabina -> Drzwi : Ponów zamykanie
+    end
+
+    Drzwi --> Kabina : drzwi zamknięte\nzaryglowane
+
+    Kabina -> Silnik : Polecenie ruchu
+
+    loop Monitorowanie ruchu
+
+        Silnik -> CzPozycji : Odczyt enkodera
+        CzPozycji --> Kabina : aktualna pozycja
+
+        Kabina -> Master : Aktualizacja pozycji
+
+    end
+
+    Kabina -> Silnik : Hamowanie
+    Kabina -> Silnik : STOP
+
+    Kabina -> Drzwi : Otworz drzwi
+
+    Drzwi --> Kabina : drzwi otwarte
+
+    Kabina -> Display : Wyświetlenie piętra
+
+    Master -> Master : Usunięcie zgłoszenia\nz kolejki
+
+end
+
+@enduml

@@ -1,0 +1,93 @@
+@startuml
+start
+
+:Odczytaj aktualne położenie windy;
+
+if (Czy winda znajduje się\nna piętrze?) then (TAK)
+
+    :Ustal aktualne piętro;
+
+else (NIE)
+
+    :Uruchom ruch w dół;
+
+    while (Czy osiągnięto parter?) is (NIE)
+
+        :Monitoruj czujniki położenia;
+
+    endwhile (TAK)
+
+    :Zatrzymaj windę;
+
+endif
+
+repeat
+
+    :Sprawdź aktywne przywołania;
+
+    if (Czy istnieje przywołanie\npowyżej aktualnego piętra?) then (TAK)
+
+        :Uruchom ruch w górę;
+
+        while (Czy osiągnięto\npiętro docelowe?) is (NIE)
+
+            :Monitoruj czujniki położenia;
+
+            if (Czy wykryto\nprzywołanie na aktualnym piętrze?) then (TAK)
+
+                :Zatrzymaj windę;
+                :Otwórz drzwi;
+
+                while (Czy drzwi są otwarte?) is (TAK)
+
+                    :Oczekiwanie;
+
+                endwhile (NIE)
+
+            endif
+
+        endwhile (TAK)
+
+        :Zatrzymaj windę;
+        :Otwórz drzwi;
+
+    else (NIE)
+
+        if (Czy winda znajduje się\nna parterze?) then (TAK)
+
+            :Oczekiwanie na przywołanie;
+
+        else (NIE)
+
+            :Uruchom ruch w dół;
+
+            while (Czy osiągnięto parter?) is (NIE)
+
+                :Monitoruj czujniki położenia;
+
+                if (Czy wykryto\nprzywołanie na aktualnym piętrze?) then (TAK)
+
+                    :Zatrzymaj windę;
+                    :Otwórz drzwi;
+
+                    while (Czy drzwi są otwarte?) is (TAK)
+
+                        :Oczekiwanie;
+
+                    endwhile (NIE)
+
+                endif
+
+            endwhile (TAK)
+
+            :Zatrzymaj windę;
+            :Otwórz drzwi;
+
+        endif
+
+    endif
+
+repeat while (System aktywny?)
+
+stop
+@enduml

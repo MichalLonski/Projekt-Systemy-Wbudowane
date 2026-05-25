@@ -1,0 +1,61 @@
+@startuml
+start
+
+while()
+:Odczyt kolejki zgłoszeń;
+
+if (Czy kolejka jest pusta?) then (TAK)
+    :Przejdz w tryb oczekiwania;
+    stop
+else (NIE)
+    :Wybierz zgloszenie\nz kolejki;
+endif
+
+:Wyznacz piętro docelowe;
+
+if (Czy system jest\nw trybie awaryjnym?) then (TAK)
+    :Anuluj kolejkę zgłoszeń;
+    :Jedź na piętro ewakuacyjne;
+    :Otwórz drzwi;
+    :Zablokuj dalsze użycie;
+    stop
+else (NIE)
+endif
+
+if (Czy kabina jest\nprzeciążona?) then (TAK)
+    :Włącz alarm przeciążenia;
+    :Zablokuj ruch windy;
+    stop
+else (NIE)
+endif
+
+if (Czy drzwi są otwarte?) then (TAK)
+    :Zamknij drzwi;
+endif
+
+if (Czy wykryto przeszkodę\nw drzwiach?) then (TAK)
+    :Wstrzymaj zamykanie;
+    :Odczekaj interwał;
+    :Ponów próbę zamknięcia;
+endif
+
+:Zarygluj drzwi;
+
+if (Cel > aktualne pietro?) then (TAK)
+    :Uruchom ruch w góre;
+else (NIE)
+    :Uruchom ruch w dół;
+endif
+
+while (Czy osiagnięto\npiętro docelowe?) is (NIE)
+    :Monitoruj czujniki pozycji;
+    :Aktualizuj prędkość;
+endwhile (TAK)
+
+:Zatrzymaj kabinę;
+:Wyrównaj poziom kabiny;
+:Otwórz drzwi;
+:Usuń zrealizowane\nzgłoszenie z kolejki;
+endwhile(Tryb serwisowy)
+stop
+@enduml
