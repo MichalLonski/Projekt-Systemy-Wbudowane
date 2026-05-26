@@ -1,0 +1,63 @@
+@startuml
+hide empty description
+
+[*] --> Wyłączona
+
+state Wyłączona {
+}
+
+state Gotowość
+
+state Przeciążenie {
+
+    [*] --> AlarmPrzeciążenia
+
+    state AlarmPrzeciążenia
+    state BlokadaRuchu
+
+    AlarmPrzeciążenia --> BlokadaRuchu
+
+    BlokadaRuchu --> [*] : masa <= limit
+}
+
+state TrybSerwisowy {
+
+    [*] --> EdycjaParametrów
+
+    state EdycjaParametrów
+    state Walidacja
+    state ZapisParametrów
+
+    EdycjaParametrów --> Walidacja
+    Walidacja --> ZapisParametrów : Dane poprawne
+    Walidacja --> EdycjaParametrów : Błąd zakresu
+
+    ZapisEEPROM --> EdycjaParametrów : Zapis udany
+}
+
+state TrybAwaryjny {
+
+    [*] --> AnulowanieZgłoszeń
+
+    state AnulowanieZgłoszeń
+    state JazdaEwakuacyjna
+    state OtwarcieDrzwi
+    state BlokadaSystemu
+
+    AnulowanieZgłoszeń --> JazdaEwakuacyjna
+    JazdaEwakuacyjna --> OtwarcieDrzwi : Osiągnięto piętro ewakuacyjne
+    OtwarcieDrzwi --> BlokadaSystemu : Drzwi otwarte
+}
+
+Wyłączona --> Gotowość : Włączenie zasilania
+
+Gotowość --> TrybSerwisowy : Deaktywacja trybu serwisowego
+TrybSerwisowy --> Gotowość
+
+Gotowość --> TrybAwaryjny : Alarm PPOŻ
+TrybSerwisowy --> TrybAwaryjny : Alarm PPOŻ
+Przeciążenie --> TrybAwaryjny : Alarm PPOŻ
+
+TrybAwaryjny --> Gotowość : Alarm odwołany/\nReset systemu
+
+@enduml

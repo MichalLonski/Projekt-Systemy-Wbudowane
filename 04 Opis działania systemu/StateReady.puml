@@ -1,0 +1,89 @@
+@startuml
+hide empty description
+state Gotowość {
+
+    [*] --> Oczekiwanie
+
+    state Oczekiwanie {
+    }
+
+    Oczekiwanie --> AnalizaZgłoszeń : Nowe zgłoszenie
+
+    state AnalizaZgłoszeń {
+    }
+
+    AnalizaZgłoszeń --> PrzygotowanieJazdy : Przydzielenie kabiny
+    
+    state PrzygotowanieJazdy {
+
+        [*] --> SprawdzenieDrzwi
+
+        state SprawdzenieDrzwi
+        state ZamykanieDrzwi
+        state Ryglowanie
+        state WeryfikacjaWagi
+
+        SprawdzenieDrzwi --> ZamykanieDrzwi : Drzwi otwarte
+        SprawdzenieDrzwi --> Ryglowanie : Drzwi zamknięte
+
+        ZamykanieDrzwi --> ZamykanieDrzwi : Przeszkoda w drzwiach
+
+        ZamykanieDrzwi --> Ryglowanie : Drzwi domknięte
+
+        Ryglowanie --> WeryfikacjaWagi
+
+        WeryfikacjaWagi --> [*] : masa <= limit
+        WeryfikacjaWagi --> Przeciążenie : masa > limit
+    }
+
+    PrzygotowanieJazdy --> Jazda
+
+    state Jazda {
+
+        [*] --> WyborKierunku
+
+        state WyborKierunku
+        state JazdaWGóre
+        state JazdaWDół
+        state MonitorowaniePozycji
+        state Hamowanie
+        state Poziomowanie
+
+        WyborKierunku --> JazdaWGóre : cel > Aktualne piętro
+        WyborKierunku --> JazdaWDół : cel < Aktualne piętro
+
+        JazdaWGóre --> MonitorowaniePozycji
+        JazdaWDół --> MonitorowaniePozycji
+
+        MonitorowaniePozycji --> MonitorowaniePozycji : Odczyt czujników\nAktualizacja prędkości
+
+        MonitorowaniePozycji --> Hamowanie : Osiągnięto piętro docelowe
+
+        Hamowanie --> Poziomowanie : Prędkość = 0
+
+        Poziomowanie --> [*]
+    }
+
+    Jazda --> ObsługaPiętra : Kabina zatrzymana
+
+    state ObsługaPiętra {
+
+        [*] --> OtwieranieDrzwi
+
+        state OtwieranieDrzwi
+        state OczekiwanieNaPasażera
+        state AktualizacjaKolejki
+
+        OtwieranieDrzwi --> OczekiwanieNaPasażera : Drzwi otwarte
+
+        OczekiwanieNaPasażera --> AktualizacjaKolejki : timeout lub przycisk zamknij
+
+        AktualizacjaKolejki --> [*] : Zgłoszenie usunięte
+    }
+
+    ObsługaPiętra --> Oczekiwanie : Kolejka pusta
+    ObsługaPiętra --> AnalizaZgłoszeń : Kolejka niepusta
+    
+}
+
+@enduml

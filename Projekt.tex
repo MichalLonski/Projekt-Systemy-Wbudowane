@@ -286,7 +286,7 @@ System jest używany przez różne grupy użytkowników:
 
 \textbf{Węzeł Piętrowy} obsługuje przyciski i wyświetlacz na każdym piętrze. Komunikuje się z Jednostką Główną przez magistralę CAN, podobnie jak Kabina. CAN został wybrany ze względu na odporność na zakłócenia elektromagnetyczne panujące w szybie windy.
 
-\textbf{Systemy Zewnętrzne} -- PPOŻ i panel serwisowy -- komunikują się przez moduł zewnętrzny oddzielony od magistrali CAN, co zapewnia niezależność systemu bezpieczeństwa.
+\textbf{Systemy Zewnętrzne} - PPOŻ i panel serwisowy - komunikują się przez moduł zewnętrzny oddzielony od magistrali CAN, co zapewnia niezależność systemu bezpieczeństwa.
 
 \section{Dane w systemie}
 
@@ -298,10 +298,10 @@ System jest używany przez różne grupy użytkowników:
 \midrule
 Wielkość fizyczna & Położenie liniowe \\
 Jednostka & Milimetry [mm] \\
-Zakres & 0 -- maksymalna wysokość szybu \\
+Zakres & 0 - maksymalna wysokość szybu \\
 Rozdzielczość przechowywana & 1 mm \\
 Rozdzielczość wyświetlana & Numer piętra (liczba całkowita) \\
-Format wymiany & \texttt{uint32} -- surowa wartość z enkodera \\
+Format wymiany & \texttt{uint32} - surowa wartość z enkodera \\
 Źródło & Czujnik pozycji \\
 Odbiorcy & Master, wyświetlacz kabiny, wyświetlacz piętrowy \\
 \bottomrule
@@ -315,10 +315,10 @@ Odbiorcy & Master, wyświetlacz kabiny, wyświetlacz piętrowy \\
 \midrule
 Wielkość fizyczna & Masa \\
 Jednostka & Kilogramy [kg] \\
-Zakres & 0 -- 150\% udźwigu nominalnego \\
+Zakres & 0 - 150\% udźwigu nominalnego \\
 Rozdzielczość przechowywana & 0.1 kg \\
 Rozdzielczość wyświetlana & Niewyświetlana użytkownikowi \\
-Format wymiany & \texttt{float32} -- odczyt ADC przeliczony na kg \\
+Format wymiany & \texttt{float32} - odczyt ADC przeliczony na kg \\
 Źródło & Czujnik wagi \\
 Odbiorcy & Sterownik kabiny, Master \\
 \bottomrule
@@ -330,14 +330,14 @@ Odbiorcy & Sterownik kabiny, Master \\
 \toprule
 \textbf{Atrybut} & \textbf{Wartość} \\
 \midrule
-Wielkość fizyczna & Brak -- dane logiczne \\
+Wielkość fizyczna & Brak - dane logiczne \\
 Jednostka & Brak \\
-Zakres & Piętro: 0 -- N, kierunek: \{góra, dół\} \\
+Zakres & Piętro: 0 - N, kierunek: \{góra, dół\} \\
 Rozdzielczość przechowywana & 1 piętro \\
 Rozdzielczość wyświetlana & Podświetlenie przycisku wybranego piętra \\
 Format wymiany & \texttt{\{floor: uint8, direction: enum, source: enum\}} \\
 Źródło & Panel przycisków kabiny, przyciski piętrowe \\
-Odbiorcy & Master -- kolejka zadań \\
+Odbiorcy & Master - kolejka zadań \\
 \bottomrule
 \end{tabularx}
 
@@ -347,12 +347,12 @@ Odbiorcy & Master -- kolejka zadań \\
 \toprule
 \textbf{Atrybut} & \textbf{Wartość} \\
 \midrule
-Wielkość fizyczna & Brak -- dane logiczne \\
+Wielkość fizyczna & Brak - dane logiczne \\
 Jednostka & Brak \\
 Zakres & \{otwarte, zamknięte, w ruchu, zablokowane\} \\
 Rozdzielczość przechowywana & Enum 2 bity \\
 Rozdzielczość wyświetlana & Niewyświetlany bezpośrednio \\
-Format wymiany & \texttt{uint8} -- enum stanu \\
+Format wymiany & \texttt{uint8} - enum stanu \\
 Źródło & Fotokomórka drzwi, siłownik drzwi \\
 Odbiorcy & Sterownik kabiny, Master \\
 \bottomrule
@@ -366,7 +366,7 @@ Odbiorcy & Sterownik kabiny, Master \\
 \midrule
 Wielkość fizyczna & Prędkość liniowa \\
 Jednostka & Milimetry na sekundę [mm/s] \\
-Zakres & 0 -- 2500 mm/s \\
+Zakres & 0 - 2500 mm/s \\
 Rozdzielczość przechowywana & 1 mm/s \\
 Rozdzielczość wyświetlana & Niewyświetlana użytkownikowi \\
 Format wymiany & \texttt{uint16} \\
@@ -381,12 +381,12 @@ Odbiorcy & Sterownik kabiny, falownik silnika \\
 \toprule
 \textbf{Atrybut} & \textbf{Wartość} \\
 \midrule
-Wielkość fizyczna & Brak -- dane logiczne \\
+Wielkość fizyczna & Brak - dane logiczne \\
 Jednostka & Brak \\
 Zakres & \{normalny, serwisowy, awaryjny PPOŻ, przeciążenie\} \\
 Rozdzielczość przechowywana & Enum 3 bity \\
 Rozdzielczość wyświetlana & Komunikat na wyświetlaczu i głośniku \\
-Format wymiany & \texttt{uint8} -- enum trybu \\
+Format wymiany & \texttt{uint8} - enum trybu \\
 Źródło & Master, System PPOŻ, Panel serwisowy \\
 Odbiorcy & Wszystkie komponenty systemu \\
 \bottomrule
@@ -398,9 +398,9 @@ Odbiorcy & Wszystkie komponenty systemu \\
 \toprule
 \textbf{Atrybut} & \textbf{Wartość} \\
 \midrule
-Wielkość fizyczna & Brak -- nastawy serwisowe \\
+Wielkość fizyczna & Brak - nastawy serwisowe \\
 Jednostka & Zależna od parametru \\
-Zakres & Czas otwarcia drzwi: 1--10 s, prędkość nominalna: 100--2500 mm/s, piętro bazowe: 0--N \\
+Zakres & Czas otwarcia drzwi: 1-10 s, prędkość nominalna: 100-2500 mm/s, piętro bazowe: 0-N \\
 Rozdzielczość przechowywana & Zależna od parametru \\
 Rozdzielczość wyświetlana & Wartość liczbowa na panelu serwisowym \\
 Format wymiany & \texttt{\{param\_id: uint8, value: uint32\}} \\
@@ -415,9 +415,9 @@ Odbiorcy & Pamięć EEPROM, Master \\
 \toprule
 \textbf{Atrybut} & \textbf{Wartość} \\
 \midrule
-Wielkość fizyczna & Brak -- dane logiczne \\
+Wielkość fizyczna & Brak - dane logiczne \\
 Jednostka & Brak \\
-Zakres & ID karty: 0 -- $2^{32}$, poziom dostępu: \{pasażer, serwis, służby\} \\
+Zakres & ID karty: 0 - $2^{32}$, poziom dostępu: \{pasażer, serwis, służby\} \\
 Rozdzielczość przechowywana & 32-bitowe ID karty \\
 Rozdzielczość wyświetlana & Niewyświetlane \\
 Format wymiany & \texttt{\{card\_id: uint32, access\_level: uint8\}} \\
@@ -430,13 +430,84 @@ Odbiorcy & Master, pamięć konfiguracji \\
 
 \textbf{Żądania jazdy} trafiają do Mastera, który porównuje je z \textbf{pozycją kabiny} i generuje polecenia ruchu.
 
-\textbf{Waga kabiny} nadpisuje żądania jazdy -- przekroczenie progu wymusza tryb przeciążenia i blokuje ruch.
+\textbf{Waga kabiny} nadpisuje żądania jazdy - przekroczenie progu wymusza tryb przeciążenia i blokuje ruch.
 
-\textbf{Stan drzwi} blokuje zmianę \textbf{prędkości kabiny} -- jazda możliwa tylko przy drzwiach zamkniętych i zaryglowanych.
+\textbf{Stan drzwi} blokuje zmianę \textbf{prędkości kabiny} - jazda możliwa tylko przy drzwiach zamkniętych i zaryglowanych.
 
-\textbf{Tryb pracy} jest nadrzędny dla całego systemu -- tryb awaryjny PPOŻ anuluje wszystkie żądania i wymusza zjazd na piętro ewakuacyjne.
+\textbf{Tryb pracy} jest nadrzędny dla całego systemu - tryb awaryjny PPOŻ anuluje wszystkie żądania i wymusza zjazd na piętro ewakuacyjne.
 
 \textbf{Uprawnienia dostępu} filtrują żądania jazdy na piętra z ograniczonym dostępem.
 
 \textbf{Parametry konfiguracyjne} z EEPROM definiują wartości graniczne dla prędkości, czasu otwarcia drzwi i piętra bazowego.
+
+\pagebreak
+\section{Opis działania systemu}
+\subsection{Diagram stanów}
+    \begin{center}
+        \includegraphics*[height=\dimexpr\textheight-2cm\relax,keepaspectratio]{04 Opis działania systemu/States.png}
+    \end{center}
+\pagebreak
+    \begin{center}
+        \includegraphics*[height=\dimexpr\textheight-1cm\relax,keepaspectratio]{04 Opis działania systemu/StateReady.png}
+    \end{center}
+\begin{landscape}
+\pagebreak
+\subsection{Diagram interakcji}
+    \begin{center}
+        \includegraphics*[width=\dimexpr\linewidth-6cm\relax,keepaspectratio]{04 Opis działania systemu/interaction.png}
+    \end{center}
+\end{landscape}
+\pagebreak
+\subsection{Diagram przepływu}
+    \begin{center}
+        \includegraphics*[height=\dimexpr\textheight-2cm\relax,keepaspectratio]{04 Opis działania systemu/flowchart.png}
+    \end{center}
+\pagebreak
+\subsection{Diagram decyzyjny}
+    \begin{center}
+        \includegraphics*[height=\dimexpr\textheight-2cm\relax,keepaspectratio]{04 Opis działania systemu/decision.png}
+    \end{center}
+\pagebreak
+\subsection{Przeliczenie ADC na masę}
+Czujnik wagi oparty jest na tensometrze podłączonym do wejścia ADC mikrokontrolera.
+Surowa wartość odczytu $r$ (liczba całkowita 0-4095 dla 12-bitowego ADC) przeliczana jest na masę w kilogramach według wzoru:
+\begin{equation}
+    m = \frac{r - r_0}{r_{max} - r_0} \cdot m_{max}
+\end{equation}
+gdzie:
+\begin{itemize}
+    \item $r_0$ - wartość ADC dla pustej kabiny (kalibracja przy uruchomieniu),
+    \item $r_{max}$ - wartość ADC dla maksymalnego udźwigu $m_{max}$,
+    \item $m_{max}$ - maksymalny udźwig kabiny w kg (parametr konfiguracyjny).
+\end{itemize}
+Wynik $m$ przechowywany jest jako \texttt{float32} z rozdzielczością 0.1kg. Próg przeciążenia ustawiony jest na $1.1 \cdot m_{max}$, co daje 10\% margines bezpieczenstwa.
+\subsection{Sekwencja sygnałów przy zamykaniu drzwi}
+Poniżej przedstawiono wyliczeniową sekwencję sygnałów generowanych przez sterownik kabiny podczas zamykania drzwi przed jazdą:
+\begin{enumerate}
+    \item Sterownik wystawia sygnał \texttt{GPIO: DOOR\_CLOSE = 1} - siłownik drzwi rozpoczyna zamykanie.
+    \item Co 20ms sterownik odpytuje fotokomórkę: \texttt{GPIO: OBSTACLE = ?}
+    \begin{itemize}
+        \item Jeśli \texttt{OBSTACLE = 1} - sterownik wystawia \texttt{GPIO: DOOR\_CLOSE = 0}, odczekuje 500ms i ponawia próbę od kroku 1.
+        \item Jeśli \texttt{OBSTACLE = 0} - kontynuuje zamykanie.
+    \end{itemize}
+    \item Po wykryciu \texttt{GPIO: DOOR\_CLOSED = 1} (wyłącznik krańcowy) sterownik wystawia \texttt{GPIO: DOOR\_LOCK = 1} - elektrozamek rygluje drzwi.
+    \item Sterownik odczekuje 50 ms i sprawdza potwierdzenie ryglowania: \break\texttt{GPIO: DOOR\_LOCKED = ?}
+    \begin{itemize}
+        \item Jeśli \texttt{DOOR\_LOCKED = 1} - sterownik wysyła do Mastera przez CAN komunikat \break\texttt{\{status: READY\}}.
+        \item Jeśli \texttt{DOOR\_LOCKED = 0} - sterownik ponawia ryglowanie od kroku 3, maksymalnie 3 razy, po czym zgłasza błąd do Mastera.
+    \end{itemize}
+\end{enumerate}
+\subsection{Sekwencja sygnałów przy przeciażeniu}
+Wykrycie masy powyżej progu $1.1 \cdot m_{max}$ wyzwala następującą sekwencję:
+\begin{enumerate}
+    \item Sterownik kabiny blokuje sygnał ruchu: \texttt{PWM: MOTOR = 0}.
+    \item Sterownik wystawia \texttt{GPIO: DOOR\_OPEN = 1} - drzwi pozostają otwarte.
+    \item Co 1s następuje wyświetlenie na ekranie kabiny komunikatu o przeciażeniu przez SPI oraz emitowany jest sygnał dźwiękowy przez I2S w postaci trzech krótkich tonów (100 ms dźwięk, 100 ms cisza, powtórzenie 3 razy).
+    \item Master jest informowany przez CAN komunikatem \texttt{\{status: OVERLOAD\}}.
+    \item Po każdym odczycie ADC sterownik sprawdza czy $m \leq m_{max}$:
+    \begin{itemize}
+        \item Jeśli TAK - sekwencja kończy się, wyświetlacz jest czyszczony, system wraca do stanu gotowości.
+        \item Jeśli NIE - sekwencja trwa.
+    \end{itemize}
+\end{enumerate}
 \end{document}
