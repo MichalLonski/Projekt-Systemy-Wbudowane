@@ -1,0 +1,77 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{titlesec}
+
+\geometry{margin=2.5cm}
+
+
+\begin{document}
+
+
+\section{Przeliczenie ADC na mas\k{e}}
+
+
+Czujnik wagi oparty jest na tensometrze pod\l\k{a}czonym do wej\'scia ADC mikrokontrolera. Surowa warto\'s\'c odczytu $r$ (liczba ca\l kowita 0--4095 dla 12-bitowego ADC) przeliczana jest na mas\k{e} w kilogramach wed\l ug wzoru:
+
+\begin{equation}
+    m = \frac{r - r_0}{r_{max} - r_0} \cdot m_{max}
+\end{equation}
+
+gdzie:
+\begin{itemize}
+    \item $r_0$ -- warto\'s\'c ADC dla pustej kabiny (kalibracja przy uruchomieniu),
+    \item $r_{max}$ -- warto\'s\'c ADC dla maksymalnego ud\'zwigu $m_{max}$,
+    \item $m_{max}$ -- maksymalny ud\'wig kabiny w kg (parametr konfiguracyjny).
+\end{itemize}
+
+Wynik $m$ przechowywany jest jako \texttt{float32} z rozdzielczo\'sci\k{a} 0,1 kg. Pr\'og przecia\. zenia ustawiony jest na $1{,}1 \cdot m_{max}$, co daje 10\% margines bezpiecze\'nstwa.
+
+
+\section{Sekwencja sygna\l\'ow przy zamykaniu drzwi}
+
+
+Poni\. zej przedstawiono wyliczeniow\k{a} sekwencj\k{e} sygna\l\'ow generowanych przez sterownik kabiny podczas zamykania drzwi przed jazd\k{a}:
+
+\begin{enumerate}
+    \item Sterownik wystawia sygna\l{} \texttt{GPIO: DOOR\_CLOSE = 1} -- si\l ownik drzwi rozpoczyna zamykanie.
+    \item Co 20 ms sterownik odpytuje fotokom\'urk\k{e}: \texttt{GPIO: OBSTACLE = ?}
+    \begin{itemize}
+        \item Je\'sli \texttt{OBSTACLE = 1} -- sterownik wystawia \texttt{GPIO: DOOR\_CLOSE = 0}, odczekuje 500 ms i ponawia pr\'ob\k{e} od kroku 1.
+        \item Je\'sli \texttt{OBSTACLE = 0} -- kontynuuje zamykanie.
+    \end{itemize}
+    \item Po wykryciu \texttt{GPIO: DOOR\_CLOSED = 1} (wy\l\k{a}cznik kra\'ncowy) sterownik wystawia \texttt{GPIO: DOOR\_LOCK = 1} -- elektrozamek rygluje drzwi.
+    \item Sterownik odczekuje 50 ms i sprawdza potwierdzenie ryglowania: \texttt{GPIO: DOOR\_LOCKED = ?}
+    \begin{itemize}
+        \item Je\'sli \texttt{DOOR\_LOCKED = 1} -- sterownik wysy\l a do Mastera przez CAN komunikat \texttt{\{status: READY\}}.
+        \item Je\'sli \texttt{DOOR\_LOCKED = 0} -- sterownik ponawia ryglowanie od kroku 3, maksymalnie 3 razy, po czym zg\l asza b\l\k{a}d do Mastera.
+    \end{itemize}
+\end{enumerate}
+
+Ca\l y proces zamykania nie mo\. ze trwa\'c d\l u\. ziej ni\. z 10 s -- przekroczenie tego limitu skutkuje zg\l oszeniem b\l\k{e}du i przej\'sciem do stanu oczekiwania.
+
+
+\section{Sekwencja sygna\l\'ow przy przecia\. zeniu}
+
+
+Wykrycie masy powy\. zej progu $1{,}1 \cdot m_{max}$ wyzwala nast\k{e}puj\k{a}c\k{a} sekwencj\k{e}:
+
+\begin{enumerate}
+    \item Sterownik kabiny blokuje sygna\l{} ruchu: \texttt{PWM: MOTOR = 0}.
+    \item Sterownik wystawia \texttt{GPIO: DOOR\_OPEN = 1} -- drzwi pozostaj\k{a} otwarte.
+    \item Co 1 s nast\k{e}puje wy\'swietlenie na ekranie kabiny komunikatu o przecia\. zeniu przez SPI oraz emitowany jest sygna\l{} d\'zwi\k{e}kowy przez I2S w postaci trzech kr\'otkich ton\'ow (100 ms d\'zuwi\k{e}k, 100 ms cisza, powt\'orzenie 3 razy).
+    \item Master jest informowany przez CAN komunikatem \texttt{\{status: OVERLOAD\}} i usuwa zg\l oszenie z kolejki.
+    \item Po ka\. zdym odczycie ADC sterownik sprawdza czy $m \leq m_{max}$:
+    \begin{itemize}
+        \item Je\'sli TAK -- sekwencja ko\'nczy si\k{e}, wy\'swietlacz jest czyszczony, system wraca do stanu gotowo\'sci.
+        \item Je\'sli NIE -- sekwencja trwa.
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
