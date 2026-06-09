@@ -42,7 +42,6 @@ Główną funkcjonalnością systemu jest transport pasażerów pomiędzy piętr
 \subsubsection{Funkcjonalności wtórne}
 \begin{itemize}
     \item optymalizacja kolejności przystanków
-    \item obsługa wielu wind
     \item wzywanie serwisu/pomocy
     \item wykrywanie przeciążenia i reagowanie na nie
     \item tryby specjalne (awaryjny, serwisowy)
@@ -117,8 +116,7 @@ System jest używany przez różne grupy użytkowników:
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
 1. Pasażer naciska przycisk kierunku jazdy (góra/dół). \newline
 2. System rejestruje zgłoszenie wraz z kierunkiem. \newline
-3. System analizuje pozycję wszystkich kabin i przydziela tę, która dotrze najszybciej. \newline
-4. Zgłoszenie zostaje dodane do kolejki obsługi.} \\ \hline
+3. Zgłoszenie zostaje dodane do kolejki obsługi.} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:}} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Alternate/Exception Flows:} \newline
 \textbf{Ex. 1:} System w trybie awaryjnym - zgłoszenie ignorowane. \newline
@@ -151,8 +149,8 @@ System jest używany przez różne grupy użytkowników:
 3. System dodaje piętro do listy przystanków i aktualizuje plan jazdy windy. \newline
 } \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Subflows:} \newline
-\textbf{S1:} System zamyka drzwi kabiny. \newline
-\textbf{S2:} System otwiera drzwi kabiny. \newline
+\textbf{S1:} System otwiera drzwi kabiny. \newline
+\textbf{S2:} System zamyka drzwi kabiny. \newline
 \textbf{S3:} System nawiązuje połączenie między pasażerem a ochroną. \newline
 \textbf{S4:} 1. Jeśli wybrane piętro nie wymaga specjalnych uprawnień kontynuuj przepływ główny. \newline
              \hspace*{20pt} 2. Oczekuj na przyłożenie karty dostępu do czytnika. \newline
@@ -209,13 +207,13 @@ System jest używany przez różne grupy użytkowników:
 \centering
 \begin{tabular}{|p{0.3\textwidth}|p{0.35\textwidth}|p{0.25\textwidth}|}
 \hline
-\textbf{Use Case Name:} Konfiguracja parametrów & \textbf{Use Case Number:} 1 & \textbf{Priority:} High \\ \hline
+\textbf{Use Case Name:} Konfiguracja parametrów & \textbf{Use Case Number:} 4 & \textbf{Priority:} High \\ \hline
 \textbf{Primary Actor:} Serwisant, System & \multicolumn{2}{l|}{\textbf{Use Case Type:} Detail, essential} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Stakeholders and Interests:} \newline
 \textbf{Serwisant:} dostosowuje pracę windy do specyfiki budynku (czas otwarcia drzwi, prędkość). \newline
 \textbf{System:} odbiera parametry niezbędne do poprawnego wyliczania krzywej hamowania i logiki drzwi. \newline
 \textbf{Baza danych:} przechowuje nastawy w pamięci nieulotnej.} \\ \hline
-\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Ten UC opisuje proces wprowadzania nastaw serwisowych przez technika, takich jak czas podtrzymania otwartych drzwi, prędkość nominalna oraz piętro bazowe.} \\ \hline
+\multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Brief description:} Ten UC opisuje proces wprowadzania nastaw serwisowych przez technika, takich jak czas podtrzymania otwartych drzwi, prędkość nominalna oraz piętro bazowe (ewakuacyjne).} \\ \hline
 \textbf{Trigger:} Serwisant (aktywacja przełącznika trybu) & \multicolumn{2}{l|}{\textbf{Type:} External} \\ \hline
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Relationships:} \newline
 \textbf{Association:} Baza danych (Pamięć konfiguracji) } \\ \hline
@@ -261,7 +259,7 @@ System jest używany przez różne grupy użytkowników:
 \multicolumn{3}{|p{0.9\textwidth}|}{\textbf{Normal Flow of Events:} \newline
 1. System odbiera sygnał alarmowy. \newline
 2. Natychmiast anuluje wszystkie zgłoszenia. \newline
-3. Kieruje windę na bezpieczne piętro . \newline
+3. Kieruje windę na piętro bazowe. \newline
 4. Otwiera drzwi i blokuje dalsze użycie. \newline
 5. System pozostaje w stanie awaryjnym do odwołania alarmu.} \\ \hline
 \end{tabular}
