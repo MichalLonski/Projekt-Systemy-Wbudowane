@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx} % Required for inserting images
+
+\begin{document}
+
+\maketitle
+
+\section*{Słownik pojęć}
+\addcontentsline{toc}{section}{Słownik pojęć}
+ 
+\begin{description}
+ 
+  \item[ADC] \textit{(Analog-to-Digital Converter)} – 12-bitowy przetwornik używany do odczytu tensometru (czujnik wagi); surowa wartość 0–4095 przeliczana na kilogramy wzorem kalibracyjnym (sekcja~5.5).
+ 
+  \item[CAN] \textit{(Controller Area Network)} – magistrala łącząca Jednostkę Główną z~Kabiną i~Węzłami Piętrowymi; wybrana ze względu na odporność na zakłócenia elektromagnetyczne w~szybie windy.
+ 
+  \item[EEPROM] – pamięć nieulotna przechowująca parametry konfiguracyjne systemu (czas otwarcia drzwi, prędkość nominalna, piętro bazowe); podłączona do Mikrokontrolera Master przez I$^2$C.
+ 
+  \item[ETA] \textit{(Estimated Time of Arrival)} – szacowany czas przyjazdu windy, wyznaczany przez logikę kolejkowania i wyświetlany na Wyświetlaczach Piętrowych.
+ 
+  \item[Jednostka Główna] – węzeł nadrzędny systemu; realizuje logikę kolejkowania żądań, optymalizację trasy kabiny oraz komunikację z~systemami zewnętrznymi (PPO, panel serwisowy) przez moduł UART.
+ 
+  \item[Kabina] – przestrzeń transportująca pasażerów; wyposażona w~Sterownik kabiny (Slave) obsługujący silnik, drzwi, czujniki, panel przycisków i~wyświetlacz.
+ 
+  \item[Kalibracja] – procedura serwisowa pomiaru wartości ADC dla pustej kabiny ($r_0$) i~pełnego udźwigu ($r_\text{max}$); wymagana do poprawnego przeliczania masy.
+ 
+  \item[Kolejka żądań] – lista żądań jazdy zarządzana przez Jednostkę Główną; optymalizowana w~celu minimalizacji liczby zatrzymań i~czasu oczekiwania pasażerów.
+ 
+  \item[Piętro bazowe] – piętro ewakuacyjne konfigurowane przez serwisanta; winda kieruje się na nie automatycznie w~Trybie Awaryjnym.
+ 
+  \item[PPO] – zewnętrzny system przeciwpożarowy; wysyła sygnał alarmowy do Jednostki Głównej przez UART, wywołując Tryb Awaryjny.
+ 
+  \item[Ryglowanie drzwi] – elektromechaniczne zablokowanie drzwi po ich zamknięciu (GPIO: DOOR\_LOCK); ruch kabiny możliwy wyłącznie przy potwierdzonym ryglowaniu (DOOR\_LOCKED~=~1).
+ 
+  \item[Sterownik kabiny (Slave)] – mikrokontroler w~kabinie zarządzający jej podzespołami; komunikuje się z~Jednostką Główną przez CAN.
+ 
+  \item[Sterownik piętra] – mikrokontroler w~Węźle Piętrowym obsługujący przyciski i~wyświetlacz piętrowy; komunikuje się z~Jednostką Główną przez CAN.
+ 
+  \item[Tryb Awaryjny] – aktywowany sygnałem PPO; anuluje wszystkie żądania, kieruje kabinę na piętro bazowe, otwiera drzwi i~blokuje system do odwołania alarmu.
+ 
+  \item[Tryb Przeciążenia] – aktywowany gdy masa kabiny przekroczy $1{,}1 \cdot m_\text{max}$; blokuje ruch i~utrzymuje drzwi otwarte do czasu usunięcia przeciążenia.
+ 
+  \item[Tryb Serwisowy] – aktywowany przełącznikiem przez serwisanta; umożliwia edycję parametrów konfiguracyjnych; ignoruje priorytety kolejki.
+ 
+  \item[Udźwig nominalny ($m_\text{max}$)] – maksymalna dopuszczalna masa kabiny w~kg; parametr konfiguracyjny stanowiący podstawę obliczeń progu przeciążenia ($1{,}1 \cdot m_\text{max}$).
+ 
+  \item[Węzeł Piętrowy] – podzespół na każdym piętrze zawierający Sterownik piętra, przyciski kierunkowe i~wyświetlacz; komunikuje się z~Jednostką Główną przez CAN.
+ 
+  \item[Żądanie jazdy] – wpis w~kolejce opisujący piętro docelowe, kierunek jazdy i~źródło (kabina lub piętro); format: \texttt{\{floor: uint8, direction: enum, source: enum\}}.
+ 
+\end{description}
+
+\end{document}

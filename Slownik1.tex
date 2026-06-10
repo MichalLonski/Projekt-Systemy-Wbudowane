@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx} % Required for inserting images
+
+\title{SW5}
+\author{Jan Brzoska}
+\date{June 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Słownik pojęć}
+\addcontentsline{toc}{section}{Słownik pojęć}
+
+Poniżej zebrano definicje terminów technicznych i skrótów używanych w całej dokumentacji systemu sterowania windą.
+
+\begin{description}
+
+  \item[ADC] \textit{(Analog-to-Digital Converter)} – przetwornik analogowo-cyfrowy; w systemie używany do odczytu sygnału z czujnika wagi (tensometru) i przeliczenia go na wartość cyfrową w zakresie 0–4095 (12-bitowy ADC).
+
+  \item[Alarm przeciążenia] – stan systemu aktywowany, gdy masa kabiny przekroczy próg $1{,}1 \cdot m_\text{max}$; skutkuje blokowaniem ruchu, otwarciem drzwi oraz cyklicznym komunikatem dźwiękowym i wizualnym do czasu usunięcia przeciążenia.
+
+  \item[CAN] \textit{(Controller Area Network)} – magistrala komunikacyjna stosowana do transmisji danych między Jednostką Główną, Kabiną i Węzłami Piętrowymi; wybrana ze względu na odporność na zakłócenia elektromagnetyczne panujące w szybie windy.
+
+  \item[Czujnik pozycji] – czujnik (enkoder) dostarczający bieżącą pozycję liniową kabiny w milimetrach; odczytywany przez Sterownik kabiny i przekazywany do Jednostki Głównej; rozdzielczość przechowywana: 1 mm.
+
+  \item[Czujnik wagi] – tensometr podłączony do wejścia ADC Sterownika kabiny; mierzy masę kabiny z rozdzielczością 0,1 kg; wartość surowa przeliczana jest na kilogramy zgodnie ze wzorem kalibracyjnym (patrz sekcja 5.5 dokumentacji).
+
+  \item[Czujnik zatrzymania] – czujnik binarny (GPIO) w Węźle Piętrowym wykrywający dokładną pozycję zatrzymania kabiny na danym piętrze, umożliwiający jej poziomowanie.
+
+  \item[ETA] \textit{(Estimated Time of Arrival)} – szacowany czas przyjazdu windy; parametr wyznaczany przez logikę kolejkowania w Jednostce Głównej i wyświetlany na Wyświetlaczu Piętrowym.
+
+  \item[EEPROM] \textit{(Electrically Erasable Programmable Read-Only Memory)} – pamięć nieulotna przechowująca parametry konfiguracyjne systemu (czas otwarcia drzwi, prędkość nominalna, piętro bazowe); podłączona do Mikrokontrolera Master przez magistralę I$^2$C.
+
+  \item[Falownik silnika] – urządzenie sterujące prędkością i kierunkiem obrotów silnika napędu kabiny; sterowany sygnałem PWM przez Sterownik kabiny.
+
+  \item[Fotokomórka drzwi] – czujnik optyczny (GPIO) wykrywający przeszkodę w świetle drzwi podczas ich zamykania; jej aktywacja powoduje wstrzymanie zamykania i ponowienie próby po zadanym interwale.
+
+  \item[GPIO] \textit{(General-Purpose Input/Output)} – cyfrowe wejścia/wyjścia mikrokontrolera; używane do sterowania siłownikiem drzwi, elektrozamkiem, czujnikami binarnymi (kończyk krańcowy, fotokomórka) oraz sygnalizacją.
+
+  \item[I$^2$C] \textit{(Inter-Integrated Circuit)} – szeregowa magistrala komunikacyjna; w systemie łączy Mikrokontroler Master z pamięcią EEPROM oraz zegarem RTC.
+
+  \item[I$^2$S] \textit{(Inter-IC Sound)} – cyfrowy interfejs audio; używany do sterowania głośnikiem kabiny (komunikaty głosowe, sygnały dźwiękowe przeciążenia).
+
+  \item[Jednostka Główna] – węzeł nadrzędny systemu; zawiera Mikrokontroler Master odpowiedzialny za logikę kolejkowania żądań, wyznaczanie trasy kabiny (algorytm ETA) oraz komunikację z systemami zewnętrznymi (PPO, panel serwisowy) przez moduł komunikacji zewnętrznej.
+
+  \item[Kabina] – fizyczna przestrzeń transportująca pasażerów; wyposażona w Sterownik kabiny (Slave) zarządzający wszystkimi podzespołami: silnikiem, drzwiami, czujnikami, panelem przycisków, wyświetlaczem i głośnikiem.
+
+  \item[Kalibracja] – procedura serwisowa polegająca na pomiarze wartości ADC dla pustej kabiny ($r_0$) i kabiny z maksymalnym udźwigiem ($r_\text{max}$); dane kalibracyjne przechowywane w EEPROM.
+
+  \item[Kolejka żądań] – uporządkowana lista żądań jazdy (numer piętra + kierunek + źródło) zarządzana przez Jednostkę Główną; optymalizowana w celu minimalizacji liczby zatrzymań i czasu oczekiwania pasażerów.
+
+  \item[Mikrokontroler Master] – główna jednostka obliczeniowa w Jednostce Głównej; realizuje logikę kolejkowania, algorytm wyznaczania trasy oraz nadzór nad całym systemem.
+
+  \item[Panel przycisków] – interfejs pasażera wewnątrz kabiny; zawiera przyciski wyboru pięter, otwierania/zamykania drzwi oraz przycisk alarmowy; podłączony przez GPIO do Sterownika kabiny.
+
+  \item[Panel serwisowy] – zewnętrzny interfejs technika serwisowego; umożliwia konfigurację parametrów systemu (SET\_TIME, SET\_SPEED, piętro bazowe); komunikuje się z Jednostką Główną przez moduł komunikacji zewnętrznej (UART).
+
+  \item[Parametry konfiguracyjne] – zestaw nastaw serwisowych przechowywanych w EEPROM: czas otwarcia drzwi (1–10 s), prędkość nominalna (100–2500 mm/s) oraz numer piętra bazowego (ewakuacyjnego); format wymiany: \texttt{\{param\_id: uint8, value: uint32\}}.
+
+  \item[Pasażer] – główny użytkownik systemu; wzywa windę przyciskami piętrowymi lub wybiera piętro docelowe z poziomu kabiny.
+
+  \item[Piętro bazowe] – piętro ewakuacyjne (konfigurowane przez serwisanta), na które winda kieruje się automatycznie w trybie awaryjnym PPO.
+
+  \item[PPO] – system przeciwpożarowy i ochrony obiektu; zewnętrzny system bezpieczeństwa wysyłający sygnał alarmowy do Jednostki Głównej przez moduł komunikacji zewnętrznej (UART); wywołuje Tryb Awaryjny.
+
+  \item[Prędkość kabiny] – prędkość liniowa kabiny w mm/s, zakres 0–2500 mm/s; wyliczana z odczytów czujnika pozycji; przechowywana jako \texttt{uint16}; niewyświetlana pasażerowi.
+
+  \item[PWM] \textit{(Pulse-Width Modulation)} – modulacja szerokości impulsu; używana do sterowania falownikiem silnika (prędkość i kierunek jazdy) oraz siłownikiem drzwi.
+
+  \item[Ryglowanie drzwi] – elektromechaniczne zablokowanie drzwi po ich zamknięciu (sygnał GPIO: DOOR\_LOCK); ruch kabiny możliwy wyłącznie przy potwierdzonym ryglowaniu (GPIO: DOOR\_LOCKED = 1).
+
+  \item[RTC] \textit{(Real-Time Clock)} – zegar czasu rzeczywistego; podłączony do Mikrokontrolera Master przez I$^2$C; dostarcza znaczniki czasu dla celów diagnostycznych i logowania.
+
+  \item[Serwisant] – użytkownik techniczny odpowiedzialny za konserwację, kalibrację i konfigurację systemu; posiada dostęp do Trybu Serwisowego i Panelu Serwisowego.
+
+  \item[Siłownik drzwi] – napęd mechaniczny drzwi kabiny; sterowany sygnałem PWM przez Sterownik kabiny.
+
+  \item[SPI] \textit{(Serial Peripheral Interface)} – synchroniczna magistrala komunikacyjna; w systemie używana do sterowania wyświetlaczem kabiny oraz czytnikiem kart dostępu.
+
+  \item[Stan drzwi] – zmienna logiczna opisująca bieżący stan drzwi: \texttt{otwarte | zamknięte | w ruchu | zablokowane}; przechowywana jako \texttt{uint8} (enum 2-bitowy); blokuje zmianę prędkości kabiny gdy różna od \texttt{zamknięte+zablokowane}.
+
+  \item[Sterownik kabiny (Slave)] – mikrokontroler zamontowany w kabinie; zarządza wszystkimi podzespołami kabiny i komunikuje się z Jednostką Główną przez magistralę CAN.
+
+  \item[Sterownik piętra] – mikrokontroler w Węźle Piętrowym; obsługuje przyciski piętrowe (GPIO), wyświetlacz piętrowy (SPI) oraz czujnik zatrzymania (GPIO); komunikuje się z Jednostką Główną przez CAN.
+
+  \item[Tryb Awaryjny] – tryb pracy systemu aktywowany sygnałem alarmowym PPO; anuluje wszystkie żądania, kieruje kabinę na piętro bazowe, otwiera drzwi i blokuje dalsze użycie do odwołania alarmu lub resetu systemu.
+
+  \item[Tryb Normalny] – standardowy tryb pracy systemu; kolejkowanie żądań, optymalizacja trasy, obsługa pasażerów.
+
+  \item[Tryb Serwisowy] – tryb pracy systemu aktywowany przez serwisanta przełącznikiem na panelu serwisowym; umożliwia edycję parametrów konfiguracyjnych; ignoruje priorytety kolejki; deaktywacja przywraca Tryb Normalny.
+
+  \item[Tryb Przeciążenia] – tryb pracy aktywowany gdy masa kabiny przekroczy $1{,}1 \cdot m_\text{max}$; blokuje ruch, utrzymuje drzwi otwarte, emituje alarm do momentu zmniejszenia masy poniżej $m_\text{max}$.
+
+  \item[UART] \textit{(Universal Asynchronous Receiver-Transmitter)} – asynchroniczny interfejs szeregowy; używany do komunikacji Jednostki Głównej z modułem komunikacji zewnętrznej, a przez niego z systemem PPO i panelem serwisowym.
+
+  \item[Udźwig nominalny ($m_\text{max}$)] – maksymalna dopuszczalna masa kabiny w kilogramach; parametr konfiguracyjny przechowywany w EEPROM; stanowi podstawę obliczeń progu przeciążenia.
+
+  \item[Węzeł Piętrowy] – podzespół montowany na każdym piętrze budynku; zawiera Sterownik piętra obsługujący przyciski piętrowe i wyświetlacz piętrowy; komunikuje się z Jednostką Główną przez CAN.
+
+  \item[Wyświetlacz kabiny] – wyświetlacz wewnątrz kabiny (SPI); pokazuje aktualny numer piętra, komunikaty o stanie systemu (przeciążenie, tryb awaryjny) oraz podświetlenie wybranych przycisków.
+
+  \item[Wyświetlacz piętrowy] – wyświetlacz na każdym piętrze (SPI, Węzeł Piętrowy); pokazuje aktualny numer piętra kabiny lub szacowany czas przyjazdu (ETA).
+
+  \item[Żądanie jazdy] – elementarny wpis w kolejce żądań opisujący: numer piętra docelowego (\texttt{uint8}), kierunek jazdy (\texttt{enum}: góra/dół) oraz źródło żądania (\texttt{enum}: kabina/piętro); format wymiany: \texttt{\{floor: uint8, direction: enum, source: enum\}}.
+
+\end{description}
+
+\end{document}
